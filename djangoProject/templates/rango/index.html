@@ -12,8 +12,18 @@
 	</head>
 
 	<body>
-			
-		<img src="{% static "images/rango.jpg" %}" alt="Picture of Rango" />
+		<h1>Rango says...</h1>
+		<div> 
+			hey there partner <br />
+			<strong>{{boldmessage}}</strong><br />
+		</div>
+		<div>
+			<img src="{% static "images/rango.jpg" %}"
+				alt="Picture of rango">
+		</div>
+		<div>
+			<a href="/rango/about/">About</a>
+		</div>
 		
 	</body>
 </html>
