@@ -16,6 +16,7 @@
     </div>
 
     <div>
+    <h3>visits: {{ visits }}</h3>
         <br />
         <h3>Most Liked Categories</h3>
     </div>
@@ -25,7 +26,7 @@
     <ul>
         {% for category in categories %}
             <li>
-                <a href="{% url 'rango:show_category' category.slug %}">{{ category.name }}
+                <a href="{% url 'show_category' category.slug %}">{{ category.name }}
                 </a>
             </li>
         {% endfor %}

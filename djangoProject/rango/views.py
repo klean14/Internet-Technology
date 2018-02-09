@@ -26,8 +26,11 @@ def about(request):
     if request.session.test_cookie_worked():
         print("TEST COOKIE WORKED!")
         request.session.delete_test_cookie()
+
+    visitor_cookie_handler(request)
+    context_dict = {'visits': request.session['visits']}
     print(request.user)
-    return render(request, 'rango/about.html', {})
+    return render(request, 'rango/about.html', context_dict)
 
 def show_category(request,category_name_slug):
     context_dict = {}
@@ -94,12 +97,11 @@ def register(request):
 
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
-
             user.set_password(user.password)
             user.save()
 
             profile = profile_form.save(commit=False)
-            profile.save()
+            profile.user = user
 
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
@@ -179,7 +181,7 @@ def visitor_cookie_handler(request):
 # If the cookie exists, the value returned is casted to an integer.
 # If the cookie doesn't exist, then the default value of 1 is used.
     visits = int(request.COOKIES.get('visits', '1'))
-    last_visit_cookie = request.COOKIES.get('last_visit', str(datetime.now()))
+    last_visit_cookie = get_server_side_cookie(request,'last_visit', str(datetime.now()))
     last_visit_time = datetime.strptime(last_visit_cookie[:-7],
                                         '%Y-%m-%d %H:%M:%S')
     # If it's been more than a day since the last visit...
